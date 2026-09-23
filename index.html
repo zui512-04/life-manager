@@ -1,1 +1,1163 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
 
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
+
+<title>我的生活管理器</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Microsoft JhengHei",
+        sans-serif;
+
+    background:
+        linear-gradient(135deg, #111827, #1e293b);
+
+    color: white;
+
+    min-height: 100vh;
+
+    padding-bottom: 30px;
+}
+
+/* =========================
+   頂部
+========================= */
+
+.header {
+    padding: 28px 20px 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(99,102,241,0.35),
+            rgba(139,92,246,0.2)
+        );
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.08);
+}
+
+.header h1 {
+    font-size: 27px;
+    margin-bottom: 6px;
+}
+
+.header p {
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+/* =========================
+   容器
+========================= */
+
+.container {
+    width: 92%;
+    max-width: 600px;
+    margin: auto;
+}
+
+/* =========================
+   統計
+========================= */
+
+.stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+
+    margin-top: 18px;
+}
+
+.stat {
+    background:
+        rgba(255,255,255,0.07);
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    border-radius: 16px;
+
+    padding: 15px 10px;
+
+    text-align: center;
+
+    backdrop-filter: blur(10px);
+}
+
+.stat-number {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* =========================
+   區塊
+========================= */
+
+.section {
+    margin-top: 22px;
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.section-title h2 {
+    font-size: 19px;
+}
+
+.section-title span {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* =========================
+   輸入區
+========================= */
+
+.input-box {
+    display: flex;
+    gap: 8px;
+}
+
+input,
+textarea {
+
+    width: 100%;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    border:
+        1px solid rgba(255,255,255,0.1);
+
+    color: white;
+
+    border-radius: 13px;
+
+    outline: none;
+
+    font-size: 15px;
+}
+
+input {
+    height: 48px;
+    padding: 0 15px;
+}
+
+textarea {
+    min-height: 120px;
+    padding: 14px;
+
+    resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #64748b;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #818cf8;
+}
+
+/* =========================
+   按鈕
+========================= */
+
+button {
+
+    border: none;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6366f1,
+            #8b5cf6
+        );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+button:active {
+    transform: scale(0.96);
+}
+
+.add-btn {
+    min-width: 75px;
+}
+
+/* =========================
+   待辦事項
+========================= */
+
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.todo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 13px;
+
+    background:
+        rgba(255,255,255,0.07);
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    border-radius: 15px;
+
+    animation: show 0.2s ease;
+}
+
+@keyframes show {
+
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.check {
+
+    width: 28px;
+    height: 28px;
+
+    min-width: 28px;
+
+    border-radius: 50%;
+
+    border:
+        2px solid #818cf8;
+
+    background: transparent;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+}
+
+.todo.completed .check {
+
+    background: #6366f1;
+
+}
+
+.check::after {
+
+    content: "✓";
+
+    opacity: 0;
+
+    font-size: 15px;
+}
+
+.todo.completed .check::after {
+
+    opacity: 1;
+
+}
+
+.todo-text {
+
+    flex: 1;
+
+    font-size: 15px;
+
+    word-break: break-word;
+}
+
+.todo.completed .todo-text {
+
+    text-decoration: line-through;
+
+    color: #64748b;
+}
+
+.delete-btn {
+
+    width: 32px;
+    height: 32px;
+
+    background:
+        rgba(239,68,68,0.15);
+
+    color: #f87171;
+
+    font-size: 15px;
+
+    flex-shrink: 0;
+}
+
+/* =========================
+   備忘錄
+========================= */
+
+.memo-box {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.save-btn {
+
+    height: 46px;
+
+    width: 100%;
+}
+
+.memo {
+
+    margin-top: 10px;
+
+    padding: 15px;
+
+    background:
+        rgba(255,255,255,0.07);
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    border-radius: 15px;
+}
+
+.memo-time {
+
+    color: #818cf8;
+
+    font-size: 11px;
+
+    margin-bottom: 7px;
+}
+
+.memo-content {
+
+    color: #e2e8f0;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    white-space: pre-wrap;
+
+    word-break: break-word;
+}
+
+.memo-delete {
+
+    margin-top: 10px;
+
+    background:
+        rgba(239,68,68,0.15);
+
+    color: #f87171;
+
+    padding: 7px 12px;
+
+    font-size: 12px;
+}
+
+/* =========================
+   空白提示
+========================= */
+
+.empty {
+
+    text-align: center;
+
+    color: #64748b;
+
+    padding: 25px 10px;
+
+    font-size: 14px;
+}
+
+/* =========================
+   進度條
+========================= */
+
+.progress-box {
+
+    margin-top: 18px;
+}
+
+.progress-info {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    font-size: 12px;
+
+    color: #94a3b8;
+
+    margin-bottom: 7px;
+}
+
+.progress {
+
+    width: 100%;
+
+    height: 8px;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.progress-bar {
+
+    width: 0%;
+
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6366f1,
+            #a78bfa
+        );
+
+    border-radius: 10px;
+
+    transition: 0.3s;
+}
+
+/* =========================
+   底部
+========================= */
+
+.footer {
+
+    text-align: center;
+
+    color: #475569;
+
+    font-size: 11px;
+
+    margin-top: 30px;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<!-- =========================
+     頂部
+========================= -->
+
+<div class="header">
+
+    <div class="container">
+
+        <h1>我的生活管理器</h1>
+
+        <p>
+            把今天要做的事情，好好記下來。
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="container">
+
+
+    <!-- =========================
+         統計
+    ========================= -->
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <div
+                class="stat-number"
+                id="totalCount">
+                0
+            </div>
+
+            <div class="stat-label">
+                全部
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div
+                class="stat-number"
+                id="doneCount">
+                0
+            </div>
+
+            <div class="stat-label">
+                已完成
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div
+                class="stat-number"
+                id="remainCount">
+                0
+            </div>
+
+            <div class="stat-label">
+                待完成
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         進度
+    ========================= -->
+
+    <div class="progress-box">
+
+        <div class="progress-info">
+
+            <span>
+                今日進度
+            </span>
+
+            <span id="progressText">
+                0%
+            </span>
+
+        </div>
+
+        <div class="progress">
+
+            <div
+                class="progress-bar"
+                id="progressBar">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         待辦事項
+    ========================= -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <h2>
+                📋 今日待辦
+            </h2>
+
+            <span>
+                點擊圓圈完成
+            </span>
+
+        </div>
+
+
+        <div class="input-box">
+
+            <input
+                id="todoInput"
+                type="text"
+                placeholder="例如：完成作業、買東西..."
+            >
+
+            <button
+                class="add-btn"
+                onclick="addTodo()">
+
+                新增
+
+            </button>
+
+        </div>
+
+
+        <div
+            class="todo-list"
+            id="todoList">
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         備忘錄
+    ========================= -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <h2>
+                📝 備忘錄
+            </h2>
+
+            <span>
+                可以記任何事情
+            </span>
+
+        </div>
+
+
+        <div class="memo-box">
+
+            <textarea
+                id="memoInput"
+                placeholder="寫下今天想記住的事情...">
+            </textarea>
+
+
+            <button
+                class="save-btn"
+                onclick="addMemo()">
+
+                儲存備忘錄
+
+            </button>
+
+        </div>
+
+
+        <div id="memoList"></div>
+
+    </div>
+
+
+    <div class="footer">
+
+        我的生活管理器 · 資料只儲存在這台裝置
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ==================================
+   取得資料
+================================== */
+
+let todos =
+    JSON.parse(
+        localStorage.getItem("myTodos")
+    ) || [];
+
+
+let memos =
+    JSON.parse(
+        localStorage.getItem("myMemos")
+    ) || [];
+
+
+/* ==================================
+   儲存資料
+================================== */
+
+function saveData() {
+
+    localStorage.setItem(
+        "myTodos",
+        JSON.stringify(todos)
+    );
+
+    localStorage.setItem(
+        "myMemos",
+        JSON.stringify(memos)
+    );
+
+}
+
+
+/* ==================================
+   新增待辦
+================================== */
+
+function addTodo() {
+
+    const input =
+        document.getElementById("todoInput");
+
+    const text =
+        input.value.trim();
+
+
+    if (text === "") {
+
+        alert("請先輸入待辦事項");
+
+        return;
+
+    }
+
+
+    todos.push({
+
+        id: Date.now(),
+
+        text: text,
+
+        completed: false
+
+    });
+
+
+    input.value = "";
+
+    saveData();
+
+    renderTodos();
+
+}
+
+
+/* ==================================
+   完成 / 取消完成
+================================== */
+
+function toggleTodo(id) {
+
+    todos =
+        todos.map(todo => {
+
+            if (todo.id === id) {
+
+                todo.completed =
+                    !todo.completed;
+
+            }
+
+            return todo;
+
+        });
+
+
+    saveData();
+
+    renderTodos();
+
+}
+
+
+/* ==================================
+   刪除待辦
+================================== */
+
+function deleteTodo(id) {
+
+    todos =
+        todos.filter(
+            todo => todo.id !== id
+        );
+
+
+    saveData();
+
+    renderTodos();
+
+}
+
+
+/* ==================================
+   顯示待辦
+================================== */
+
+function renderTodos() {
+
+    const list =
+        document.getElementById("todoList");
+
+
+    list.innerHTML = "";
+
+
+    if (todos.length === 0) {
+
+        list.innerHTML = `
+            <div class="empty">
+                還沒有待辦事項
+            </div>
+        `;
+
+    }
+
+
+    todos.forEach(todo => {
+
+        const item =
+            document.createElement("div");
+
+
+        item.className =
+            "todo" +
+            (todo.completed
+                ? " completed"
+                : "");
+
+
+        item.innerHTML = `
+
+            <div
+                class="check"
+                onclick="toggleTodo(${todo.id})">
+            </div>
+
+            <div class="todo-text">
+                ${escapeHTML(todo.text)}
+            </div>
+
+            <button
+                class="delete-btn"
+                onclick="deleteTodo(${todo.id})">
+
+                ×
+
+            </button>
+
+        `;
+
+
+        list.appendChild(item);
+
+    });
+
+
+    updateStats();
+
+}
+
+
+/* ==================================
+   更新統計
+================================== */
+
+function updateStats() {
+
+    const total =
+        todos.length;
+
+
+    const done =
+        todos.filter(
+            todo => todo.completed
+        ).length;
+
+
+    const remain =
+        total - done;
+
+
+    document.getElementById(
+        "totalCount"
+    ).textContent = total;
+
+
+    document.getElementById(
+        "doneCount"
+    ).textContent = done;
+
+
+    document.getElementById(
+        "remainCount"
+    ).textContent = remain;
+
+
+    let percentage = 0;
+
+
+    if (total > 0) {
+
+        percentage =
+            Math.round(
+                (done / total) * 100
+            );
+
+    }
+
+
+    document.getElementById(
+        "progressText"
+    ).textContent =
+        percentage + "%";
+
+
+    document.getElementById(
+        "progressBar"
+    ).style.width =
+        percentage + "%";
+
+}
+
+
+/* ==================================
+   新增備忘錄
+================================== */
+
+function addMemo() {
+
+    const input =
+        document.getElementById(
+            "memoInput"
+        );
+
+
+    const content =
+        input.value.trim();
+
+
+    if (content === "") {
+
+        alert("請先輸入備忘內容");
+
+        return;
+
+    }
+
+
+    memos.unshift({
+
+        id: Date.now(),
+
+        content: content,
+
+        time: new Date()
+            .toLocaleString("zh-TW")
+
+    });
+
+
+    input.value = "";
+
+    saveData();
+
+    renderMemos();
+
+}
+
+
+/* ==================================
+   刪除備忘錄
+================================== */
+
+function deleteMemo(id) {
+
+    memos =
+        memos.filter(
+            memo => memo.id !== id
+        );
+
+
+    saveData();
+
+    renderMemos();
+
+}
+
+
+/* ==================================
+   顯示備忘錄
+================================== */
+
+function renderMemos() {
+
+    const list =
+        document.getElementById(
+            "memoList"
+        );
+
+
+    list.innerHTML = "";
+
+
+    if (memos.length === 0) {
+
+        list.innerHTML = `
+            <div class="empty">
+                還沒有備忘錄
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    memos.forEach(memo => {
+
+        const item =
+            document.createElement("div");
+
+
+        item.className =
+            "memo";
+
+
+        item.innerHTML = `
+
+            <div class="memo-time">
+
+                ${memo.time}
+
+            </div>
+
+
+            <div class="memo-content">
+
+                ${escapeHTML(memo.content)}
+
+            </div>
+
+
+            <button
+                class="memo-delete"
+                onclick="deleteMemo(${memo.id})">
+
+                刪除
+
+            </button>
+
+        `;
+
+
+        list.appendChild(item);
+
+    });
+
+}
+
+
+/* ==================================
+   防止 HTML 注入
+================================== */
+
+function escapeHTML(text) {
+
+    return text
+
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* ==================================
+   Enter 新增待辦
+================================== */
+
+document
+    .getElementById("todoInput")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                addTodo();
+
+            }
+
+        }
+    );
+
+
+/* ==================================
+   啟動
+================================== */
+
+renderTodos();
+
+renderMemos();
+
+</script>
+
+</body>
+</html>
