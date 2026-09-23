@@ -1163,6 +1163,37 @@ renderTodos();
 renderMemos();
 
 </script>
+<script>
 
+if ("serviceWorker" in navigator) {
+
+    window.addEventListener(
+        "load",
+        () => {
+
+            navigator.serviceWorker
+                .register("sw.js")
+                .then(() => {
+
+                    console.log(
+                        "App 離線功能啟用"
+                    );
+
+                })
+                .catch(error => {
+
+                    console.log(
+                        "Service Worker 錯誤:",
+                        error
+                    );
+
+                });
+
+        }
+    );
+
+}
+
+</script>
 </body>
 </html>
